@@ -11,7 +11,7 @@ def main():
     parser.add_argument('url')
     args = parser.parse_args()
 
-    mo = re.match(r'^https://vc.agrsci.dk/videos/video/(\d+)/$', args.url)
+    mo = re.match(r'^https?://vc.agrsci.dk/videos/video/(\d+)/$', args.url)
     if mo is None:
         parser.error("Invalid URL")
     id = mo.group(1)
