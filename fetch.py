@@ -8,6 +8,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--feed',
                         choices='main presentation all'.split())
+    parser.add_argument('-u', '--username')
+    parser.add_argument('-p', '--password')
     parser.add_argument('url')
     args = parser.parse_args()
 
@@ -17,6 +19,23 @@ def main():
     id = mo.group(1)
 
     s = requests.Session()
+    response = s.get(
+        'https://vc.agrsci.dk/videos/video/%s/' % id)
+    if response.history:
+        # We were redirected, so a login is probably needed
+        token_pattern = (r"<input type='hidden' name='csrfmiddlewaretoken' " +
+                         r"value='([^']+)' />")
+        mo = re.search(token_pattern, response.text)
+        assert mo is not None
+        if not args.username or not args.password:
+            parser.error("Login required")
+        referer = response.url
+        response = s.post(
+            response.url,
+            data=dict(username=args.username, password=args.password,
+                      csrfmiddlewaretoken=mo.group(1)),
+            headers=dict(referer=referer))
+        assert response.status_code == 200, response.status_code
     response = s.get(
         'https://vc.agrsci.dk/videos/video/%s/authorize-playback/' % id)
     o = response.json()
