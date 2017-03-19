@@ -3,6 +3,8 @@ import argparse
 import requests
 import subprocess
 
+DOMAINS = ['vc.agrsci.dk', 'vc.au.dk', '130.226.243.18']
+prefix_regex = '^https?://(?:' + '|'.join(DOMAINS) + ')'
 
 def main():
     parser = argparse.ArgumentParser()
@@ -13,7 +15,7 @@ def main():
     parser.add_argument('url')
     args = parser.parse_args()
 
-    mo = re.match(r'^https?://vc.agrsci.dk/videos/video/(\d+)/$', args.url)
+    mo = re.match(prefix_regex + r'/videos/video/(\d+)/$', args.url)
     if mo is None:
         parser.error("Invalid URL")
     id = mo.group(1)
