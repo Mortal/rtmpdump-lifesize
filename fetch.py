@@ -4,7 +4,8 @@ import requests
 import subprocess
 
 DOMAINS = ['vc.agrsci.dk', 'vc.au.dk', '130.226.243.18']
-prefix_regex = '^https?://(?:' + '|'.join(DOMAINS) + ')'
+domain_regex = '|'.join(re.escape(domain) for domain in DOMAINS)
+prefix_regex = '^https?://(?:%s)' % domain_regex
 
 def main():
     parser = argparse.ArgumentParser()
