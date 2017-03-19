@@ -61,6 +61,7 @@ def main():
         '-a', streamer_path,
         '-t', 'rtmp://%s:1935' % hostname + '/' + streamer_path,
         '-f', 'LNX 11,2,202,569',
+        # Note O:2 means "ECMA Array" and requires a patched rtmpdump
         '-C', 'O:2', '-C', 'NN:0:%s' % token, '-C', 'NB:1:0',
         '-y', path1,
         '-o', '%s (main).mp4' % name,
