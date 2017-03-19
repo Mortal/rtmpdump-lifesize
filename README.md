@@ -36,7 +36,7 @@ Python 3.5.2 (default, Jun 28 2016, 08:46:01)
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import requests
 >>> exit()
-rav@pictoris:~/work/rtmpdump-lifesize$ python3 fetch.py https://vc.agrsci.dk/videos/video/4997/
+rav@pictoris:~/work/rtmpdump-lifesize$ python3 fetch.py https://vc.au.dk/videos/video/5497/
 Playback token is 323272562
 RTMPDump v2.4
 (c) 2010 Andrej Stepanchuk, Howard Chu, The Flvstreamer Team; license: GPL
