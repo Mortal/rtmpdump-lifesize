@@ -5,7 +5,7 @@ import subprocess
 
 DOMAINS = ['vc.agrsci.dk', 'vc.au.dk', '130.226.243.18']
 domain_regex = '|'.join(re.escape(domain) for domain in DOMAINS)
-prefix_regex = '^https?://(?:%s)' % domain_regex
+prefix_regex = '^https?://(?P<domain>%s)' % domain_regex
 
 def main():
     parser = argparse.ArgumentParser()
@@ -16,14 +16,15 @@ def main():
     parser.add_argument('url')
     args = parser.parse_args()
 
-    mo = re.match(prefix_regex + r'/videos/video/(\d+)/$', args.url)
+    mo = re.match(prefix_regex + r'/videos/video/(?P<id>\d+)/$', args.url)
     if mo is None:
         parser.error("Invalid URL")
-    id = mo.group(1)
+    id = int(mo.group('id'))
+    domain = mo.group('domain')
 
     s = requests.Session()
-    response = s.get(
-        'https://vc.agrsci.dk/videos/video/%s/' % id)
+    # Force HTTPS
+    response = s.get('https://%s/videos/video/%s/' % (domain, id))
     if response.history:
         # We were redirected, so a login is probably needed
         token_pattern = (r"<input type='hidden' name='csrfmiddlewaretoken' " +
@@ -40,7 +41,7 @@ def main():
             headers=dict(referer=referer))
         assert response.status_code == 200, response.status_code
     response = s.get(
-        'https://vc.agrsci.dk/videos/video/%s/authorize-playback/' % id)
+        'https://%s/videos/video/%s/authorize-playback/' % (domain, id))
     o = response.json()
     assert o['status'] == 0
     path1 = o['main_feed']
