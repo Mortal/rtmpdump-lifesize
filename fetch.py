@@ -24,7 +24,7 @@ def main():
 
     s = requests.Session()
     # Force HTTPS
-    response = s.get('https://%s/videos/video/%s/' % (domain, id))
+    response = s.get('https://%s/videos/video/%s/' % (domain, id), verify=False)
     if response.history:
         # We were redirected, so a login is probably needed
         token_pattern = (r"<input type='hidden' name='csrfmiddlewaretoken' " +
@@ -41,7 +41,7 @@ def main():
             headers=dict(referer=referer))
         assert response.status_code == 200, response.status_code
     response = s.get(
-        'https://%s/videos/video/%s/authorize-playback/' % (domain, id))
+        'https://%s/videos/video/%s/authorize-playback/' % (domain, id), verify=False)
     o = response.json()
     assert o['status'] == 0
     path1 = o['main_feed']
