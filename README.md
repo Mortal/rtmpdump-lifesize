@@ -1,5 +1,5 @@
 # rtmpdump-lifesize
-Use rtmpdump to download videos from vc.agrsci.dk (a server running LifeSize UVC Video Center).
+Use rtmpdump to download videos from vc.au.dk (a server running LifeSize UVC Video Center).
 
 You need to check out
 [my fork of rtmpdump, branch `ecma_array`](https://github.com/Mortal/rtmpdump)
@@ -7,6 +7,10 @@ in the directory where you check out this repository and compile it.
 
 Then, you need to install the Python 3 `requests` module and simply run the
 Python 3 script with the URL of the video you wish to download.
+
+The script is depended on some GNU tools that you will have to install before running the script.
+These can be installed in the following way:
+`sudo apt install libgnutls28-dev`
 
 
 ```
